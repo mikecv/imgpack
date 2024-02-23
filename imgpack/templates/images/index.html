@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Images{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('images.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for image in images %}
+    <article class="image">al
+      <header>
+        <div>
+          <h1>{{ image['image_file'] }}</h1>
+          <div class="about">by {{ image['created'].strftime('%Y-%m-%d') }}</div>
+          <a class="action" href="{{ url_for('images.update', id=image['id']) }}">Edit</a>
+      </header>
+      <p class="body">{{ image['body'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,12 @@
+# Ignore code workspace.
+*.code-workspace
+
+# Ignore cache folders.
+__pycache__/
+
+# Ignore log files.
+*.log
+*.log.*
+
+# Ignore database files
+*.sqlite

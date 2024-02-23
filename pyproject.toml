@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "imgpack"
+version = "0.1.0"
+description = "Image steganography."
+authors = ["mdc <galacticwingcommander@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0"
+click = "^8.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
