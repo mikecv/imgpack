@@ -1,9 +1,39 @@
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
+import logging
+
+import dotsi  # type: ignore
+
+from flask import Blueprint, flash, g, redirect, render_template, request, url_for
+
+from imgpack import app_settings
+from imgpack.app_logging import setup_logging
+from imgpack.steganography import Steganography
 
 bp = Blueprint('images', __name__)
 
+log = logging.getLogger(__name__)
+
+# Load application settings.
+settings = dotsi.Dict(app_settings.load("./imgpack/settings.yaml"))
+
+# Set up application logging.
+setup_logging(log.name, settings)
+log.info(f"Starting application: {settings.app.APP_NAME}, version: {settings.app.APP_VERSION}")
+
+# Instantiate the steganography class to do image procession.
+log.info("Instantiation of steganography processing object.")
+steg = Steganography(log, settings)
+
 @bp.route('/')
 def index():
-    return render_template('images/index.html')
+    return render_template('app/index.html')
+
+@bp.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(request.url)
+    else:
+        print(f"Filename uploaded: {file.filename}")
+        return redirect(request.url)

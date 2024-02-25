@@ -7,6 +7,3 @@ __pycache__/
 # Ignore log files.
 *.log
 *.log.*
-
-# Ignore database files
-*.sqlite
