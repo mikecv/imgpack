@@ -1,0 +1,36 @@
+# Application settings.
+app:
+  APP_NAME:           "imgpack"
+  APP_VERSION:        "0.0.1"
+# Logging settings.
+log:
+  DEF_LEVEL:          10
+  MAX_SIZE:           250000
+  MAX_FILES:          3
+# Upload images.
+imgs:
+  UPLOAD_FOLDER:      "uploads"
+  ALLOWED_EXT:        {'png'}
+# Code embeding settings
+code:
+  MAX_EMBED_RATIO:    0.5
+  INC_PASSWORD:       0
+  KEEP_PASSWORD:      1
+
+# Steganography settings.
+steg:
+  PROGCODE:           "PICCODER"
+  LENBYTES:           10
+  NAMELENBYTES:       3
+  TIMELENBYTES:       3
+  CODETYPEBYTES:      1
+  PASSWDYNBYTES:      1
+  PASSWDLENBYTES:     2
+  NUMSMSBYTES:        3
+  SMSLENBYTES:        3
+  BYTESTACK:          50000
+  CODETYPE_NONE:      0
+  CODETYPE_FILE:      1
+  CODETYPE_TEXT:      2
+  PASSWDMINIMUM:      6
+  PASSWDMAXIMUM:      20

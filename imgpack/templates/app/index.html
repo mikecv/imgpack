@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="file" id="fileInput" accept=".png" style="display: none;">
+  <label for="fileInput" class="submit-btn">Browse for Image</label>
+  <input type="submit" value="Upload & Process" id="uploadButton" class="submit-btn" disabled>
+</form>
+<div id="preview"></div>
+  <div id="thumbnails"></div>
+
+  <script>
+      // Enable the upload button when a file is selected.
+      document.getElementById('fileInput').addEventListener('change', function() {
+      document.getElementById('uploadButton').disabled = false;
+    });
+
+    // Function to handle file upload asynchronously.
+    function uploadFile(event) {
+      event.preventDefault();
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+      var reader = new FileReader();
+      reader.onload = function(event) {
+          replaceThumbnail(event.target.result);
+          // Submit the form asynchronously.
+          var formData = new FormData();
+          formData.append('file', file);
+          fetch('/upload', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => {
+              console.log('File upload successful');
+              return response.json();
+          })
+          .then(data => {
+              console.log(data);
+          })
+          .catch(error => {
+              console.error('Error uploading file:', error);
+          });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Function to create and replace the original thumbnail with a specified border colour.
+    function replaceThumbnail(src, borderColor) {
+        var img = document.createElement('img');
+        img.src = src;
+        img.className = 'thumbnail';
+        img.style.borderColor = borderColor; // Set the border colour.
+        document.getElementById('preview').innerHTML = '';
+        document.getElementById('preview').appendChild(img);
+    }
+
+    // Create the original thumbnail when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('fileInput');
+        fileInput.addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                replaceThumbnail(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+  </script>
+
+{% endblock %}
+
+{% block content %}
+{% endblock %}
