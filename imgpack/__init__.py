@@ -4,7 +4,7 @@ from flask import Flask
 
 def create_app(test_config=None):
     # Create and configure the app.
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/imgpack/static')
     app.config.from_pyfile("config.py")
 
     # A simple page that says hello.

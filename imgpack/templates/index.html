@@ -50,12 +50,12 @@
         var img = document.createElement('img');
         img.src = src;
         img.className = 'thumbnail';
-        img.style.borderColor = borderColor; // Set the border colour.
+        img.style.borderColor = borderColor;
         document.getElementById('preview').innerHTML = '';
         document.getElementById('preview').appendChild(img);
     }
 
-    // Create the original thumbnail when the page loads
+    // Create the original thumbnail when the page loads.
     document.addEventListener('DOMContentLoaded', function() {
         var fileInput = document.getElementById('fileInput');
         fileInput.addEventListener('change', function(event) {

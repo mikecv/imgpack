@@ -11,6 +11,7 @@ flask = "^3.0"
 PyYAML = "^6.0"
 dotsi = "^0.0.3"
 click = "^8.1"
+Werkzeug = "^3.0"
 
 [build-system]
 requires = ["poetry-core"]
