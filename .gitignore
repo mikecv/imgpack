@@ -9,4 +9,4 @@ __pycache__/
 *.log.*
 
 # Ignore sample image files.
-/uploads/*.png
+/static/uploads/*.png

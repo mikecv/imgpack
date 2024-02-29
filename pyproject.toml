@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 flask = "^3.0"
+Flask-Cors = "^4.0"
 PyYAML = "^6.0"
 dotsi = "^0.0.3"
 click = "^8.1"

@@ -26,6 +26,10 @@ log.info(f"Starting application: {settings.app.APP_NAME}, version: {settings.app
 log.info("Instantiation of steganography processing object.")
 steg = Steganography(log, settings)
 
+@bp.route("/favicon.ico")
+def favicon():
+    return url_for('static', filename='favicon.ico')
+
 @bp.route('/')
 def index():
     return render_template('/index.html')
@@ -39,6 +43,7 @@ def upload_file():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        log.info(f"Upload request for image filename : {filename}")
         file_n_path = os.path.join("imgpack/static/", settings.imgs.UPLOAD_FOLDER, filename)
         file.save(file_n_path)
         log.info(f"Upload request for image stored at : {file_n_path}")
@@ -47,9 +52,9 @@ def upload_file():
         # of the browsed/uploaded image.
 
         # Test border colour.
-        border_color = 'blue'
+        border_colour = 'blue'
 
-        return jsonify({'thumbnail_path': url_for('static', filename=f'uploads/{filename}'), 'border_color': border_color})
+        return jsonify({'thumbnail_path': url_for('static', filename=f'uploads/{filename}'), 'border-color': border_colour})
     else:
         return redirect(request.url)
 

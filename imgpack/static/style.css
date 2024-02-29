@@ -135,7 +135,6 @@ input[type=submit] {
 }
 
 .thumbnail {
-    max-width: auto;
     max-height: 115px;
     margin: 5px;
     border: 4px solid lightgrey;

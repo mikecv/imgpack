@@ -18,6 +18,7 @@
 
     // Function to handle file upload asynchronously.
     function uploadFile(event) {
+      console.log(">>> Entered uploadFile.");
       event.preventDefault();
       var fileInput = document.getElementById('fileInput');
       var file = fileInput.files[0];
@@ -26,6 +27,7 @@
           replaceThumbnail(event.target.result);
           // Submit the form asynchronously.
           var formData = new FormData();
+          console.log(">>> In uploadFile formData is: ", formData);
           formData.append('file', file);
           fetch('/upload', {
               method: 'POST',
@@ -36,8 +38,13 @@
               return response.json();
           })
           .then(data => {
+              console.log(">>> Then data for image file: ", data.thumbnail_pathrmData);
               console.log(data);
-          })
+              // Extract border color from response.
+              var borderColor = data['border-color'];
+              // Call replaceThumbnail with thumbnail path and border colour.
+              replaceThumbnail(data.thumbnail_path, borderColor);
+         })
           .catch(error => {
               console.error('Error uploading file:', error);
           });
@@ -47,27 +54,41 @@
 
     // Function to create and replace the original thumbnail with a specified border colour.
     function replaceThumbnail(src, borderColor) {
+        console.log(">>> Entered replaceThumbnail.");
         var img = document.createElement('img');
         img.src = src;
         img.className = 'thumbnail';
-        img.style.borderColor = borderColor;
+        img.style.borderColor = borderColor || 'lightgrey';
+        console.log(">>> In replaceThumbnail borderColor is: ", img.style.borderColor);
         document.getElementById('preview').innerHTML = '';
         document.getElementById('preview').appendChild(img);
     }
 
     // Create the original thumbnail when the page loads.
     document.addEventListener('DOMContentLoaded', function() {
+        console.log(">>> Entered addEventListener.");
         var fileInput = document.getElementById('fileInput');
         fileInput.addEventListener('change', function(event) {
             var file = event.target.files[0];
             var reader = new FileReader();
             reader.onload = function(event) {
+                console.log(">>> Calling replaceThumbnail.");
                 replaceThumbnail(event.target.result);
             };
             reader.readAsDataURL(file);
         });
     });
-  </script>
+
+    // Add an event listener for form submissions
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+        
+        // Call the uploadFile function to handle file upload
+        uploadFile(event);
+    });
+
+</script>
 
 {% endblock %}
 
