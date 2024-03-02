@@ -2,16 +2,19 @@
 app:
   APP_NAME:           "imgpack"
   APP_VERSION:        "0.0.1"
+
 # Logging settings.
 log:
   DEF_LEVEL:          10
   MAX_SIZE:           250000
   MAX_FILES:          3
+
 # Upload images.
 imgs:
   UPLOAD_FOLDER:      "uploads"
   ALLOWED_EXT:        {'png'}
-# Code embeding settings
+
+# Code embedding settings
 code:
   MAX_EMBED_RATIO:    0.5
   INC_PASSWORD:       0
@@ -34,3 +37,8 @@ steg:
   CODETYPE_TEXT:      2
   PASSWDMINIMUM:      6
   PASSWDMAXIMUM:      20
+
+# Thumbnail settings.
+thumb:
+  Border_Col_Code:    "Green"
+  Border_Col_None:    "Grey"
