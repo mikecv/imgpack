@@ -175,3 +175,8 @@ label[for="fileInput"] {
   background-color: #ccc;
   color: #999;
 }
+
+#thumbnails-container {
+  max-height: 200px; /* Set a maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+}

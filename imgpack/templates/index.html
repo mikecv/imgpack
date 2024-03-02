@@ -5,14 +5,16 @@
 <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
   <input type="file" name="file" id="fileInput" accept=".png" style="display: none;">
   <label for="fileInput" class="submit-btn">Browse for Image</label>
-  <input type="submit" value="Upload & Process" id="uploadButton" class="submit-btn" disabled>
+  <input type="submit" value="Upload and Process" id="uploadButton" class="submit-btn" disabled>
 </form>
 <div id="preview"></div>
-  <div id="thumbnails"></div>
-
+<div id="thumbnails-container">
+    <div id="thumbnails"></div>
+</div>
+  
   <script>
-      // Enable the upload button when a file is selected.
-      document.getElementById('fileInput').addEventListener('change', function() {
+    // Enable the upload button when a file is selected.
+    document.getElementById('fileInput').addEventListener('change', function() {
       document.getElementById('uploadButton').disabled = false;
     });
 

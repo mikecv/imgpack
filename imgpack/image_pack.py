@@ -43,17 +43,23 @@ def upload_file():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        log.info(f"Upload request for image filename : {filename}")
+        log.info(f"Upload request for image filename: {filename}")
         file_n_path = os.path.join("imgpack/static/", settings.imgs.UPLOAD_FOLDER, filename)
         file.save(file_n_path)
-        log.info(f"Upload request for image stored at : {file_n_path}")
+        log.info(f"Upload request for image stored at: {file_n_path}")
 
-        # Test that can set the border colour of the thumbnail
-        # of the browsed/uploaded image.
+        # Load the file into steganofraphy object for processing.
+        steg.initPicSettings()
+        steg.load_image(file_n_path)
+ 
+        # Set border colour of thumbnail according to whether
+        # file is encoded or not.
+        if steg.pic_coded:
+            border_colour = settings.thumb.Border_Col_Code
+        else:
+            border_colour = settings.thumb.Border_Col_None
 
-        # Test border colour.
-        border_colour = 'blue'
-
+        # Return border colour for the thumbnail back to UI handler.
         return jsonify({'thumbnail_path': url_for('static', filename=f'uploads/{filename}'), 'border-color': border_colour})
     else:
         return redirect(request.url)
