@@ -26,14 +26,28 @@ log.info(f"Starting application: {settings.app.APP_NAME}, version: {settings.app
 log.info("Instantiation of steganography processing object.")
 steg = Steganography(log, settings)
 
+"""
+Route for default application icon.
+"""
 @bp.route("/favicon.ico")
 def favicon():
     return url_for('static', filename='favicon.ico')
 
+"""
+Route for start home page.
+Where user can browse for an image to upload.
+"""
 @bp.route('/')
 def index():
     return render_template('/index.html')
 
+"""
+Route for when user selects to uploaded the browseed image.
+This sends the image to be checked in the steganography function.
+This will result in the image bitmap being redrawn abd
+a coloured border added (a different colour if it containes
+embedded data).
+"""
 @bp.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -64,5 +78,32 @@ def upload_file():
     else:
         return redirect(request.url)
 
+@bp.route('/check_for_thumbnails', methods=['GET', 'POST'])
+def update_thumbnails():
+    log.info("Poll from frontend triggered.")
+
+    # Test list of json struncturs.
+    images = jsonify({
+            "thumbnails": [
+                {
+                "thumbnail_path": "imgpack/static/uploads/rabbit.png",
+                "border-color": "red"
+                },
+                {
+                "thumbnail_path": "imgpack/static/uploads/Genieva.png",
+                "border-color": "blue"
+                },
+                {
+                "thumbnail_path": "imgpack/static/uploads/film.png",
+                "border-color": "green"
+                }
+            ]
+        }
+    )
+    return images
+
+"""
+Function for checking if browsed image is of allowed type.
+"""
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in settings.imgs.ALLOWED_EXT

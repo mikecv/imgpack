@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 
-{% block header %}
+{% block header %}{% endblock %}
+
+{% block content %}
 
 <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
   <input type="file" name="file" id="fileInput" accept=".png" style="display: none;">
   <label for="fileInput" class="submit-btn">Browse for Image</label>
   <input type="submit" value="Upload and Process" id="uploadButton" class="submit-btn" disabled>
 </form>
+
+<!--
+    Container for the browsed image and controls to interact with it.
+-->
 <div id="preview"></div>
-<div id="thumbnails-container">
-    <div id="thumbnails"></div>
-</div>
   
-  <script>
+<script>
     // Enable the upload button when a file is selected.
     document.getElementById('fileInput').addEventListener('change', function() {
       document.getElementById('uploadButton').disabled = false;
@@ -92,7 +95,45 @@
 
 </script>
 
-{% endblock %}
+<!--
+    Container for secondary thumbnails,
+    i.e. thumnails of files embedded in the primary image.
+-->
+<div id="thumbnails-container">
+    <div id="thumbnails"></div>
+</div>
 
-{% block content %}
+<script>
+
+    // Function to add secondary thumbnails with a specified border colour.
+    function addThumbnail(src, borderColor) {
+        console.log(">>> Entered addThumbnail.");
+        var img = document.createElement('img');
+        img.src = src;
+        img.className = 'thumbnail';
+        img.style.borderColor = borderColor || 'lightgrey';
+        console.log(">>> In addThumbnail borderColor is: ", img.style.borderColor);
+        document.getElementById('thumbnails-container').appendChild(img);
+    }
+
+    // Periodically poll the server for updates to embedded files.
+    setInterval(function() {
+        console.log(">>> Polling for thumbnails function.");
+        fetch('/check_for_thumbnails')
+        .then(response => response.json())
+        .then(data => {
+            console.log(">>> Poll response data: ,data");
+            if (data.thumbnails) {
+                data.thumbnails.forEach(thumbnail => {
+                    addThumbnail(thumbnail.thumbnail_path, thumbnail['border-color']);
+                });
+            } else {
+                console.error("Invalid response format");
+            }
+        }) 
+        .catch(error => console.error("Error:", error));
+    }, 5000);
+
+</script>
+
 {% endblock %}
