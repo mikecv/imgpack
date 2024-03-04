@@ -64,12 +64,16 @@ def upload_file():
 
         # Load the file into steganofraphy object for processing.
         steg.initPicSettings()
-        steg.load_image(file_n_path)
+        steg.loadNewImage(file_n_path)
  
         # Set border colour of thumbnail according to whether
         # file is encoded or not.
         if steg.pic_coded:
             border_colour = settings.thumb.Border_Col_Code
+
+            # Image is coded so extract embedded data and
+            # display thumbnail.
+            # pass
         else:
             border_colour = settings.thumb.Border_Col_None
 
@@ -78,28 +82,26 @@ def upload_file():
     else:
         return redirect(request.url)
 
+"""
+This function is to respond to the front end polling for new images.
+Structure to jsonify is list of dictionary entries.
+Example strucure is:
+  "thumbnails": [
+      {
+          "thumbnail_path": "imgpack/static/uploads/rabbit.png",
+          "border-color": "red"
+      },
+      {
+          "thumbnail_path": "imgpack/static/uploads/film.png",
+          "border-color": "green"
+      }
+  ]
+"""
 @bp.route('/check_for_thumbnails', methods=['GET', 'POST'])
 def update_thumbnails():
     log.info("Poll from frontend triggered.")
 
-    # Test list of json struncturs.
-    images = jsonify({
-            "thumbnails": [
-                {
-                "thumbnail_path": "imgpack/static/uploads/rabbit.png",
-                "border-color": "red"
-                },
-                {
-                "thumbnail_path": "imgpack/static/uploads/Genieva.png",
-                "border-color": "blue"
-                },
-                {
-                "thumbnail_path": "imgpack/static/uploads/film.png",
-                "border-color": "green"
-                }
-            ]
-        }
-    )
+    images = jsonify({"thumbnails": []})
     return images
 
 """
